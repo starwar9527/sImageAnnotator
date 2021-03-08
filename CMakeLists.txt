@@ -13,6 +13,9 @@ endif()
 
 find_package(Qt5 ${QT_MIN_VERSION} REQUIRED ${QT_COMPONENTS})
 
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
 set(KIMAGEANNOTATOR_MIN_VERSION "0.5.0")
 find_package(kImageAnnotator ${KIMAGEANNOTATOR_MIN_VERSION} REQUIRED)
 
@@ -20,7 +23,4 @@ set(KCOLORPICKER_MIN_VERSION "0.1.5")
 find_package(kColorPicker ${KCOLORPICKER_MIN_VERSION} REQUIRED)
 
 
-add_executable(sImageAnnotator src/sImageAnnotator.cpp)
-
-qt5_use_modules(${PROJECT_NAME} Widgets)
-target_link_libraries(sImageAnnotator kImageAnnotator kColorPicker X11 Qt5::Svg)
+add_subdirectory(src)
