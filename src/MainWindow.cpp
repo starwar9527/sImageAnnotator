@@ -18,10 +18,16 @@
 
 using namespace ImageAnnotator;
 
-MainWindow::MainWindow(KImageAnnotator* imageAnnotator):
-		QMainWindow(),
-		m_ImageAnnotator(imageAnnotator)
+MainWindow::MainWindow():
+		QMainWindow()
 {
+	QPixmap pixmap(QSize(500, 500));
+	pixmap.fill(QColor(Qt::darkGreen));
+	m_ImageAnnotator = new KImageAnnotator();
+	m_ImageAnnotator->addTab(pixmap, QStringLiteral("image1"), QStringLiteral("image1"));
+	m_ImageAnnotator->addTab(pixmap, QStringLiteral("image2"), QStringLiteral("image2"));
+	m_ImageAnnotator->adjustSize();
+
 	setCentralWidget(m_ImageAnnotator);
 	auto menuBar = this->menuBar();
 	auto menu = new QMenu(QStringLiteral("Edit"));
@@ -38,7 +44,7 @@ MainWindow::MainWindow(KImageAnnotator* imageAnnotator):
 	menu->addAction(scaleAction);
 	menu->addAction(modifyCanvasAction);
 	menuBar->addMenu(menu);
-	show();
+	//show();
 	setMinimumSize(m_ImageAnnotator->sizeHint());
 
 	QPixmap imageItem(QSize(100, 100));

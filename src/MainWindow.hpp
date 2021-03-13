@@ -19,7 +19,7 @@ class MainWindow: public QMainWindow
 {
 	Q_OBJECT
 public:
-	explicit MainWindow(KImageAnnotator *imageAnnotator);
+	explicit MainWindow();
 	~MainWindow() override;
 
 private slots:
