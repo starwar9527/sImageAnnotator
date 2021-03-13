@@ -8,7 +8,10 @@
 #ifndef SRC_MAINWINDOW_CPP_
 #define SRC_MAINWINDOW_CPP_
 
-#include <QApplication>
+#include <QMainWindow>
+#include <QVBoxLayout>
+#include <QMenuBar>
+
 #include "MainWindow.hpp"
 #include <iostream>
 #include <stdexcept>
@@ -19,6 +22,30 @@ MainWindow::MainWindow(KImageAnnotator* imageAnnotator):
 		QMainWindow(),
 		m_ImageAnnotator(imageAnnotator)
 {
+	setCentralWidget(m_ImageAnnotator);
+	auto menuBar = this->menuBar();
+	auto menu = new QMenu(QStringLiteral("Edit"));
+	auto annotationAction = new QAction(QStringLiteral("Annotation"), this);
+	auto cropAction = new QAction(QStringLiteral("Crop"), this);
+	auto scaleAction = new QAction(QStringLiteral("Scale"), this);
+	auto modifyCanvasAction = new QAction(QStringLiteral("Modify Canvas"), this);
+	connect(annotationAction, &QAction::triggered, m_ImageAnnotator, &KImageAnnotator::showAnnotator);
+	connect(cropAction, &QAction::triggered, m_ImageAnnotator, &KImageAnnotator::showCropper);
+	connect(scaleAction, &QAction::triggered, m_ImageAnnotator, &KImageAnnotator::showScaler);
+	connect(modifyCanvasAction, &QAction::triggered, m_ImageAnnotator, &KImageAnnotator::showCanvasModifier);
+	menu->addAction(annotationAction);
+	menu->addAction(cropAction);
+	menu->addAction(scaleAction);
+	menu->addAction(modifyCanvasAction);
+	menuBar->addMenu(menu);
+	show();
+	setMinimumSize(m_ImageAnnotator->sizeHint());
+
+	QPixmap imageItem(QSize(100, 100));
+	imageItem.fill(QColor(Qt::yellow));
+	m_ImageAnnotator->insertImageItem(QPointF(100,100), imageItem);
+
+
 	bool connected = connect(m_ImageAnnotator,
 			&KImageAnnotator::tabCloseRequested,
 			this,
