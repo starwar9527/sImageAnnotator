@@ -11,6 +11,7 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QMenuBar>
+#include <QMessageBox>
 
 #include "MainWindow.hpp"
 #include <iostream>
@@ -44,12 +45,11 @@ MainWindow::MainWindow():
 	menu->addAction(scaleAction);
 	menu->addAction(modifyCanvasAction);
 	menuBar->addMenu(menu);
-	//show();
 	setMinimumSize(m_ImageAnnotator->sizeHint());
 
-	QPixmap imageItem(QSize(100, 100));
-	imageItem.fill(QColor(Qt::yellow));
-	m_ImageAnnotator->insertImageItem(QPointF(100,100), imageItem);
+//	QPixmap imageItem(QSize(100, 100));
+//	imageItem.fill(QColor(Qt::yellow));
+//	m_ImageAnnotator->insertImageItem(QPointF(100,100), imageItem);
 
 
 	bool connected = connect(m_ImageAnnotator,
@@ -71,11 +71,37 @@ MainWindow::~MainWindow()
 
 void MainWindow::tabCloseRequested(int index)
 {
-	std::cout<<"MainWindow::tabCloseRequested is called"<<std::endl;
-	//removeTab(index);
-	m_ImageAnnotator->removeTab(index);
+	if(discardChanges(index))
+	{
+		std::cout<<"changes not discarded!"<<std::endl;
+		m_ImageAnnotator->removeTab(index);
+	}
+	else
+	{
+		std::cout<<"changes discarded!"<<std::endl;
+	}
+
 }
 
+bool MainWindow::discardChanges(int index)
+{
+	QString title("Warning-SaveImage");
+	QString question("Do you want to save the change?");
 
+	auto reply = QMessageBox::question(nullptr, title, question,
+			QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+
+	if(reply == QMessageBox::No)
+		return true;
+	else if(reply == QMessageBox::Cancel)
+		return false;
+	else
+		return saveImage();
+}
+
+bool MainWindow::saveImage() const
+{
+	std::cout<<"Image saved"<<std::endl;
+}
 
 #endif /* SRC_MAINWINDOW_CPP_ */

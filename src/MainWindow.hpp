@@ -26,6 +26,10 @@ private slots:
 	void tabCloseRequested(int index);
 
 private:
+	bool discardChanges(int index);
+	bool saveImage() const;
+
+private:
 	KImageAnnotator *m_ImageAnnotator;
 };
 
