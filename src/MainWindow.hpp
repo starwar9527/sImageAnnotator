@@ -27,7 +27,7 @@ private slots:
 
 private:
 	bool discardChanges(int index);
-	bool saveImage();
+	bool saveImage(int index);
 
 private:
 	KImageAnnotator *m_ImageAnnotator;

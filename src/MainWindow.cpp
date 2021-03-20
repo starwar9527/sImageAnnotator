@@ -103,10 +103,10 @@ bool MainWindow::discardChanges(int index)
 	else if(reply == QMessageBox::Cancel)
 		return false;
 	else
-		return saveImage();
+		return saveImage(index);
 }
 
-bool MainWindow::saveImage()
+bool MainWindow::saveImage(int index)
 {
 	//std::cout<<"Image saved"<<std::endl;
 	QString filename = QFileDialog::getSaveFileName(
@@ -115,7 +115,7 @@ bool MainWindow::saveImage()
 			"",
 			tr("Images (*.png *.xpm *.jpg);; All Files (*))") );
 
-	//qDebug()<<"image is saved to file "<<filename;
+	return m_ImageAnnotator->imageAt(index).save(filename);
 }
 
 #endif /* SRC_MAINWINDOW_CPP_ */
