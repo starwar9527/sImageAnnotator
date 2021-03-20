@@ -20,6 +20,7 @@ int main(int argc, char **argv)
 
 	//QMainWindow mainWindow;
 	MainWindow mainWindow;
+	mainWindow.setWindowState(Qt::WindowMaximized);
 	mainWindow.show();
 
 	return app.exec();

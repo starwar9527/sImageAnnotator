@@ -12,6 +12,8 @@
 #include <QVBoxLayout>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QDebug>
 
 #include "MainWindow.hpp"
 #include <iostream>
@@ -23,13 +25,16 @@ MainWindow::MainWindow():
 		QMainWindow()
 {
 	QPixmap pixmap(QSize(500, 500));
-	pixmap.fill(QColor(Qt::darkGreen));
+	pixmap.fill(QColor(Qt::white));
 	m_ImageAnnotator = new KImageAnnotator();
 	m_ImageAnnotator->addTab(pixmap, QStringLiteral("image1"), QStringLiteral("image1"));
-	m_ImageAnnotator->addTab(pixmap, QStringLiteral("image2"), QStringLiteral("image2"));
-	m_ImageAnnotator->adjustSize();
+//	m_ImageAnnotator->addTab(pixmap, QStringLiteral("image2"), QStringLiteral("image2"));
+//	m_ImageAnnotator->addTab(pixmap, QStringLiteral("image3"), QStringLiteral("image3"));
+//	m_ImageAnnotator->adjustSize();
+	m_ImageAnnotator->setTabBarAutoHide(false);
+	m_ImageAnnotator->setWindowState(Qt::WindowMaximized);
 
-	setCentralWidget(m_ImageAnnotator);
+
 	auto menuBar = this->menuBar();
 	auto menu = new QMenu(QStringLiteral("Edit"));
 	auto annotationAction = new QAction(QStringLiteral("Annotation"), this);
@@ -62,6 +67,8 @@ MainWindow::MainWindow():
 //	connect(m_ImageAnnotator,
 //			&KImageAnnotator::tabCloseRequested,
 //			qApp, &QApplication::aboutQt);
+
+	setCentralWidget(m_ImageAnnotator);
 }
 
 MainWindow::~MainWindow()
@@ -99,9 +106,16 @@ bool MainWindow::discardChanges(int index)
 		return saveImage();
 }
 
-bool MainWindow::saveImage() const
+bool MainWindow::saveImage()
 {
-	std::cout<<"Image saved"<<std::endl;
+	//std::cout<<"Image saved"<<std::endl;
+	QString filename = QFileDialog::getSaveFileName(
+			this,
+			tr("Save Image"),
+			"",
+			tr("Images (*.png *.xpm *.jpg);; All Files (*))") );
+
+	//qDebug()<<"image is saved to file "<<filename;
 }
 
 #endif /* SRC_MAINWINDOW_CPP_ */
